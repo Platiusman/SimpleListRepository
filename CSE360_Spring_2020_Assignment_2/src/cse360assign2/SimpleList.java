@@ -15,7 +15,7 @@ public class SimpleList {
 	
 	private int[] list; //array
 	private int count; //counter of number of integers in array
-	
+
 	/**
 	 * The constructor that creates a new array that can hold 10 integers, is named list, and
 	 * gives it a counter set to 0.
@@ -139,5 +139,64 @@ public class SimpleList {
 		}
 		
 		return listString;
+	}
+	
+	/**
+	 * The append method will add an integer after the last element in the list and increases
+	 * the count. If the list is full then it will increase the array's size by 50%.
+	 * @param appendedInteger the integer that will be appended to the end of the list
+	 */
+	public void append(int appendedInteger)
+	{
+		if(count == list.length)//for when the array is full
+		{
+			list = Arrays.copyOf(list, list.length + (list.length / 2));//does a copy transfer of the list into a list that is 1/2 times bigger
+		}
+		
+		list[count] = appendedInteger;
+		
+		count++;//increments the count
+	}
+	
+	/**
+	 * The first method returns either the first integer in the list or returns -1 if empty
+	 * @return the first element's integer or -1
+	 */
+	public int first()
+	{
+		if(count == 0)
+		{
+			return -1;
+		}
+		else
+		{
+			return list[0];
+		}
+	}
+	
+	/**
+	 * The last method returns either the last integer in the list or returns -1 if empty
+	 * @return the last element's integer or -1
+	 */
+	public int last()
+	{
+		if(count == 0)
+		{
+			return -1;
+		}
+		else
+		{
+			return list[count - 1];
+		}
+		
+	}
+	
+	/**
+	 * The size method find the number of available spaces in the list.
+	 * @return the array's length as an integer
+	 */
+	public int size()
+	{
+		return list.length;
 	}
 }
