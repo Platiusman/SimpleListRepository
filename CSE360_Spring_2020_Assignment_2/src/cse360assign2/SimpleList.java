@@ -9,6 +9,8 @@
 
 package cse360assign2;
 
+import java.util.Arrays;
+
 public class SimpleList {
 	
 	private int[] list; //array
@@ -29,6 +31,7 @@ public class SimpleList {
 	 * and then increment the count if list is empty, or it will first push all
 	 * elements in list forward without exceeding max array size and then set the
 	 * first element of list to the new integer and increment the list.
+	 * If the list is full, will increase in size by 50%
 	 * @param enteringInteger the array that is being added to the list
 	 */
 	public void add(int enteringInteger)
@@ -38,7 +41,7 @@ public class SimpleList {
 			list[0] = enteringInteger;
 			count++;//increments the count
 		}
-		else if(count != 10)// for when the array has multiple intgers, but isn't full
+		else if(count < list.length)// for when the array has multiple integers, but isn't full
 		{
 			for(int iterator = count; iterator > 0; iterator--)
 			{
@@ -47,30 +50,42 @@ public class SimpleList {
 			list[0] = enteringInteger;
 			count++;//increments the count
 		}
-		else if(count == 10)//for when the array is full
+		else if(count == list.length)//for when the array is full
 		{
-			for(int iterator = count - 1; iterator > 0; iterator--)
+			list = Arrays.copyOf(list, list.length + (list.length / 2));//does a copy transfer of the list into a list that is 1/2 times bigger
+			
+			for(int iterator = count; iterator > 0; iterator--)
 			{
 				list[iterator] = list[iterator - 1];
 			}
 			list[0] = enteringInteger;
+			count++;//increments the count
 		}
 	}
 	
 	/**
 	 * The remove method will find the location of the integer being removed and then
 	 * remove the integer and bring all elements past the integer down the list. To
-	 * finish, it will decrement the count.
+	 * finish, it will decrement the count. If more than 1 entry exists and more than
+	 * 25% of the array is empty, it will decrease the array's size by 25%.
 	 * @param exitingInteger
 	 */
 	public void remove(int exitingInteger)
 	{
-		int location = search(exitingInteger);// finds the location of the integer to be removed
-		for(int iterator = location; iterator < count - 1; iterator++)//removes the integer by moving the rest of the array over it
+		if(count > 1)//as long as there is more than one entry removal can be started
 		{
-			list[iterator] = list[iterator + 1];
+			if(count < (3 * list.length / 4))// if the count is less than 75% of the available array size
+			{
+				list = Arrays.copyOf(list, list.length - (list.length / 4));//does a copy transfer of the list into a list that is 1/4 smaller
+			}
+			int location = search(exitingInteger);// finds the location of the integer to be removed
+			
+			for(int iterator = location; iterator < count - 1; iterator++)//removes the integer by moving the rest of the array over it
+			{
+				list[iterator] = list[iterator + 1];
+			}
+			count--;//decrements the count
 		}
-		count--;//decrements the count
 	}
 	
 	/**
